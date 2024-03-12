@@ -1,0 +1,54 @@
+---
+title: "DSNE Spring School Challenge"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+This notebook allows you to load and explore a sample air quality dataset in order to prepare your presentation for the Spring School challenge. The notebook contains some simple code to read in the dataset, filter it for a London site and an example pollutant and produce a simple plot. This is only a simple example of what the dataset contains and how to read it in. Please use this as a base to utilise the skills you have learned to prepare any analyses you may want to present to the judges.
+
+The first task will be to install any packages you need to use and load them
+
+The data used in this example is from the UK's Automatic Urban and Rural Network (AURN) of air quality monitoring sites provided by Defra (https://uk-air.defra.gov.uk/networks/network-info?view=aurn)
+
+```{r}
+install.packages("ggplot2")
+library(ggplot2)
+```
+
+Now load in the sample dataset as a data frame. This is stored as an RData file and contains measurements of 3 key air pollutants, Ozone (O3), Nitrogen Dioxide (NO2) and particulate matter (PM). These are stored in the data frames called df_O3, df_NO2 and df_PM respectively. The dataset is quite large so use the head command to view the top few rows and focus on the NO2 dataset. The notebook displays the data in such a way that you can explore the columns. We will focus on the NO2 dataset here but feel free to explore the others.
+
+```{r}
+load("AQ_sample_data.RData")
+head(df_NO2)
+```
+
+Now produce a summary of the data to see some summary statistics.
+
+```{r}
+summary(df_NO2)
+```
+
+There are sites from all over the UK in this dataset. As we are focussing on London for this challenge lets pick out one of those to look at. There will also be some sites around the London area that may be of use. Please feel free to try and find them in the dataset. The which command here filters on the site name.
+
+```{r}
+df_plt <- df_NO2[which(df_NO2$SFNAME == 'London Hillingdon'),]
+df_plt
+```
+
+Now lets plot the time series of the dataset using ggplot to see what it looks like. For each pollutant the measured value is stored as Poll_Value in the respective data frames.
+
+```{r}
+data_plot <- ggplot(data=df_plt, aes(x=tstamp, y=Poll_Value)) + geom_line() + ggtitle('Plot of NO2 at London Hillingdon AURN Site')
+data_plot
+```
+
+This is just a quick overview of the dataset. Some things you may wish to explore.
+
+1) Try looking at the time series from other London Sites
+2) Try looking at some of the other pollutants.
+3) Use some of the methods you have learned over the last few days to analyse the data and see what it tells you. Are some sites more polluted thank others?
+4) Think about building a pipeline to analyse the data.
+5) There are some meteorological variables in the dataset as well. Could these be used to explain patterns seen in the pollutant dataset? You have wind speed (ws), wind direction (wd) and air temperature (air_temp).
